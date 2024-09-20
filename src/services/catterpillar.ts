@@ -1,25 +1,8 @@
 import _ from "lodash"
-import Matter from "matter-js"
 import Catterpillar from "../models/catterpillar"
 
-export type CatterpillarOptions = {
-    length: number,
-    maxVelocity: number,
-    stiffness?: number, 
-    damping?: number, 
-    restitution?: number,
-    bodyPart: CatterpillarBodyPartOptions
-} & { [key: string]: number }
-
-export type CatterpillarBodyPartOptions = {
-    size: number,
-    stiffness?: number,
-    damping?: number,
-    points?: number,
-    restitution?: number,
-}
 const catterpillarService = {
-    isOutsideCanvas: (catterPillar, targetEl: HTMLElement) => {
+    isOutsideCanvas: (catterPillar: Catterpillar, targetEl: HTMLElement) => {
         // Reset catterpillar when it is off screen
         const head = catterPillar.head
         const butt = catterPillar.butt

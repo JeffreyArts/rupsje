@@ -1,5 +1,6 @@
 import Catterpillar from "./models/catterpillar"
 import InitializeCanvas from "./services/initialize-canvas"
+import catterpillarService from "./services/catterpillar"
 import UserControl from "./userControl"
 import Matter from "matter-js"
 import { io } from "socket.io-client";
@@ -149,4 +150,34 @@ if (mainScreen) {
     newUser.catterpillar.composite
   ])
 }
+const checkOffscreen = () => {
+  if (users.length > 0 ) {
+    users.forEach(user => {
+      if (catterpillarService.isOutsideCanvas(user.catterpillar, targetEl)){
+        const catterpillarOptions = {
+          color: user.catterpillar.color,
+          length: user.catterpillar.bodyLength,
+          maxVelocity: user.catterpillar.maxVelocity,
+          stiffness: user.catterpillar.stiffness,
+          restitution: user.catterpillar.restitution,
+          bodyPart: user.catterpillar.bodyPart
+        }
+        user.catterpillar.remove()
+        user.catterpillar = new Catterpillar(mjs.world, targetEl, {
+              x: targetEl.clientWidth / 2,
+              y: 8,
+              autoBlink: true,
+              ...catterpillarOptions
+        })
+        
+        Matter.Composite.add(mjs.world, [
+          user.catterpillar.composite
+        ])
+      }
+    })
+  }
+  requestAnimationFrame(checkOffscreen)
+}
+requestAnimationFrame(checkOffscreen)
+
 
