@@ -1,15 +1,8 @@
 import { Socket } from "socket.io-client"
 import Catterpillar from "./models/catterpillar"
-import Matter from "matter-js"
 
 class UserControls {
     public catterPillar: Catterpillar
-    private mjs: {
-        world: Matter.World;
-        runner: Matter.Runner;
-        engine: Matter.Engine;
-    }
-    private targetElement : HTMLElement
     private socket: Socket
     private id: string
     
@@ -23,20 +16,12 @@ class UserControls {
             left: HTMLElement | null,
             right: HTMLElement | null,
             message: HTMLElement | null,
-        },
-        mjs: {
-            world: Matter.World;
-            runner: Matter.Runner;
-            engine: Matter.Engine;
-        },
-        targetElement: HTMLElement
+        }
     ) {
         
         this.catterPillar = user.catterpillar
         this.socket = user.socket
         this.id = user.id
-        this.mjs = mjs
-        this.targetElement = targetElement
         
         
         if (targetButtons.left) {

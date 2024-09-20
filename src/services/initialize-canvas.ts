@@ -1,9 +1,6 @@
-import CatterpillarService from "./../services/catterpillar"
 import MatterService from "./../services/matter-js"
 import Matter from "matter-js"
 import paperService from "./../services/paper-js"
-// import { MouthState } from "./../models/catterpillar/mouth"
-
 
 const initMatterJS = (domElement: HTMLElement) => {
     const canvasEl = domElement
@@ -23,9 +20,9 @@ const initPaperJS = (targetEl: HTMLElement) => {
     paperService.init(canvas, targetEl.clientWidth, targetEl.clientHeight)
 }
 
-const createGround = (targetEl:HTMLElement, mjs) => {
-    if (!mjs.world) {
-        throw new Error("mWorld can't be null")
+const createGround = (targetEl:HTMLElement, world: Matter.World) => {
+    if (!world) {
+        throw new Error("world can't be null")
     }
   
     const ground = Matter.Bodies.rectangle(targetEl.clientWidth/2, targetEl.clientHeight+160, targetEl.clientWidth, 348, {
@@ -39,14 +36,14 @@ const createGround = (targetEl:HTMLElement, mjs) => {
     })
     
     // add all of the bodies to the world
-    Matter.Composite.add(mjs.world, [ground])
+    Matter.Composite.add(world, [ground])
 }
 
 const initializeCanvas = (targetEl: HTMLElement) => {
 
     const MatterJS = initMatterJS(targetEl)
     initPaperJS(targetEl)
-    createGround(targetEl, MatterJS)
+    createGround(targetEl, MatterJS.world)
     // console.log(targetEl)
     // renderLoop(MatterJS)
     

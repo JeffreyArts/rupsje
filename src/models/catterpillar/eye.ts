@@ -53,19 +53,6 @@ class Eye  {
         }, this.blinkInterval)
     }
 
-    #blinkUpdate(progress: {perc: number}) {
-
-        if (this.lid && this.sclera) {
-            this.lid.segments[1].point.y = this.lid.position.y - (5 - progress.perc * 5)
-            this.lid.segments[3].point.y = this.lid.position.y + (5 - progress.perc * 5)
-            this.lid.smooth({ type: "continuous"})
-            
-            this.sclera.segments[1].point.y = this.lid.segments[1].point.y 
-            this.sclera.segments[3].point.y = this.lid.segments[3].point.y 
-            this.sclera.smooth({ type: "continuous"})
-        }
-    }
-
     #setSize(){
         if (!this.lid) {
             return
@@ -223,7 +210,7 @@ class Eye  {
                             this.lid.segments[2].point.y = this.lid.position.y
                             this.lid.segments[3].point.y = this.lid.position.y + this.height / 2
                             
-                            _.each(this.lid.segments, (v,i) => {
+                            _.each(this.lid.segments, (_v,i) => {
                                 if (!this.sclera || !this.lid) {
                                     return
                                 }
@@ -264,7 +251,7 @@ class Eye  {
         }
     }            
 
-    updatePosition(x?:number,y?:number) {
+    updatePosition() {
         if (!this.pupil) {
             return console.error("Missing pupil")
         }

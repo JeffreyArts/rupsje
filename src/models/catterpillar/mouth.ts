@@ -190,7 +190,6 @@ class Mouth  {
             return
         }
         this.inTransition = true
-        const progress = { perc: 0 }
         let ease = "sine.inOut"
         if (state === "😮") {
             ease = "elastic.out(1,0.5)"

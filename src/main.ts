@@ -136,9 +136,7 @@ if (mainScreen) {
       left: document.getElementById("moveLeft"), 
       right: document.getElementById("moveRight"),
       message: document.getElementById("messageForm")
-    },
-    mjs,
-    targetEl
+    }
   )
 
   users.push(newUser)

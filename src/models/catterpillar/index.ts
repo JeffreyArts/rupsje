@@ -117,16 +117,16 @@ class Catterpillar  {
     }
 
     #createBodyParts () : {
-        composite: Matter.Composite,
-        eye: {
-            left: Eye,
-            right: Eye
-        },
-        head: Matter.Body,
-        butt: Matter.Body
+            composite: Matter.Composite,
+            eye: {
+                left: Eye,
+                right: Eye
+            },
+            head: Matter.Body,
+            butt: Matter.Body
         } {
 
-        const bodyParts = Matter.Composites.stack(this.x, this.y, this.bodyLength, 1, this.bodyPart.size + 1, 0, (x:number, y:number) => {
+        const bodyParts = Matter.Composites.stack(this.x, this.y, this.bodyLength, 1, this.bodyPart.size + 1, 0, () => {
             const bodyPart = this.#createBodyPart()
             bodyPart.body.mass = 10
 
@@ -569,6 +569,7 @@ class Catterpillar  {
         this.belly = t.composite.bodies[Math.floor((this.bodyParts.length-1)/2)]
         this.butt = t.butt
         this.body = []
+        this.#updateColor // Required for TS
         
         for (let index = 1; index < this.composite.bodies.length-1; index++) {
             this.body.push(this.composite.bodies[index])
