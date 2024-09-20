@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="./src/style.scss">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vite + TS</title>
+  </head>
+  <body id="catterpillar-container">
+    <div id="app"></div>
+    <canvas id="paperCanvas"></canvas>
+
+    <span class="user-control-button" id="moveRight">
+      <span>➡️</span>
+    </span>
+    <span class="user-control-button" id="moveLeft">
+      <span>⬅️</span>
+    </span>
+
+    <form class="user-input-message"  id="messageForm">
+      <input type="text">
+      <button type="submit">Send</button>
+    </form>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

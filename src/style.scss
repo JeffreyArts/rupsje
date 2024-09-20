@@ -1,0 +1,69 @@
+@import 'fonts.scss';
+
+html {
+  height: 100%;
+}
+  
+body {
+  background-color: #222;
+  margin: 0;
+  // display: flex;
+  // height: 100%;
+  &.__isMain {
+    .user-control-button {
+      display: none;
+    }
+  }
+}
+
+#app {
+  height: 100%;
+  width: 100%;
+  canvas {
+    opacity: 0.2;
+  }
+}
+
+#catterpillar-container {
+    position: fixed;
+    inset: 0;
+    canvas {
+      position: absolute;
+      inset:0;
+    }
+}
+
+.user-control-button {
+  position: absolute;
+  z-index: 1;
+  bottom: 0;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 40px;
+
+  &#moveRight {
+    right: 0;
+  }
+  &#moveLeft {
+    left: 0;
+  }
+}
+
+.user-input-message {
+  position: absolute;
+  top: 24px;
+  left: 50%;
+  translate: -50% 0
+}
+
+.speech-bubble {
+  z-index: 1;
+  font-size: 12px;
+  color: #222;
+  font-family: Fixedsys;
+  padding: 4px 0;
+  max-width: 140px;
+}

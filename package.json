@@ -1,0 +1,25 @@
+{
+  "name": "rups",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "@types/lodash": "^4.17.7",
+    "@types/matter-js": "^0.19.7",
+    "sass-embedded": "^1.79.1",
+    "typescript": "^5.5.3",
+    "vite": "^5.4.1"
+  },
+  "dependencies": {
+    "color": "^4.2.3",
+    "gsap": "^3.12.5",
+    "lodash": "^4.17.21",
+    "matter-js": "^0.20.0",
+    "paper": "^0.12.18"
+  }
+}
