@@ -2,10 +2,14 @@ import Catterpillar from "./models/catterpillar"
 import InitializeCanvas from "./services/initialize-canvas"
 import UserControl from "./userControl"
 import Matter from "matter-js"
+import { io } from "socket.io-client";
+import hash from "object-hash"
+import _ from "lodash"
 
 type User = {
-  catterPillar: Catterpillar
+  catterpillar: Catterpillar
   active: boolean
+  id: string
 }
 
 const targetEl = document.getElementById("app")
@@ -17,7 +21,7 @@ const colors = ["#9ab44d", "#a4ca39", "#73c358", "#61b138", "#639263", "#8ba058"
 colors.push( ...["#eacab7", "#daaa8d", "#b78d74", "#a77151", "#c97258", "#c2c411", "#6957af", "#a93bb5", "#bbc291", "#fda22d"])
 // const colors = ["#ef5b1b", "#ae5a27", "#e16843", "#f0cfa8", "#daaa8d", "#eedab7", "#cfaa3f", "#708809", "#45532c", "#39480c"]
 const mjs = InitializeCanvas(targetEl)
-const users = []
+const users = [] as Array<User>
 const mainScreen = location.search.includes("main") ? true : false
 const catterpillarOptions = {
   color: colors[Math.floor(Math.random() * colors.length)],
@@ -32,28 +36,84 @@ const catterpillarOptions = {
       restitution: .5 + Math.random() * .6 - .3,
   },
 }
-
-users.push({
-  catterpillar: new Catterpillar(mjs.world, {
-    x: targetEl.clientWidth / 2,
-    y: 8,
-    autoBlink: true,
-    ...catterpillarOptions
-  })
-})
+// users.push()
+const socket = io("http://localhost:3000");
 
 if (mainScreen) {
+  socket.on("addNewUser", data => {
+    console.log(targetEl.clientWidth )
+    const newUser = {
+        catterpillar: new Catterpillar(mjs.world, targetEl, {
+          x: targetEl.clientWidth / 2,
+          y: 8,
+          autoBlink: true,
+          ...data
+        }),
+        active: true,
+        id: data.id
+    }
+    users.push(newUser)
+
+    Matter.Composite.add(mjs.world, [
+      newUser.catterpillar.composite
+    ])
+  })
+
+  socket.on("userAction", (data: {
+    type: "move" | "text"
+    value: string
+    userId: string
+  }) => {
+    const user = _.find(users, {id: data.userId})
+    if (!user) {
+      throw new Error(`Can not find user ${data.userId}` )
+    }
+    console.log(data)
+    if (data.type == "move") {
+      if (data.value.toLowerCase() == "left") {
+        user.catterpillar.moveLeft()
+      } else {
+        user.catterpillar.moveRight()
+      }
+    }
+    
+    if (data.type == "text") {
+      user.catterpillar.speak(data.value)
+
+    }
+  })
   document.body.classList.add("__isMain")
+  
 } else {
-  new UserControl(users[0], {
+  // const socket = io("https://payload.jeffreyarts.nl");
+  const newUser = {
+    catterpillar: new Catterpillar(mjs.world,
+      targetEl,
+      {
+        x: targetEl.clientWidth / 2,
+        y: 8,
+        autoBlink: true,
+        ...catterpillarOptions
+      }
+    ),
+    id: hash(catterpillarOptions),
+    socket: socket
+  }
+
+  new UserControl(newUser, {
       left: document.getElementById("moveLeft"), 
       right: document.getElementById("moveRight"),
       message: document.getElementById("messageForm")
-  },
-  mjs,
-  targetEl
-)}
+    },
+    mjs,
+    targetEl
+  )
 
-Matter.Composite.add(mjs.world, [
-  users[0].catterpillar.composite
-])
+  
+  socket.emit('newUser', {...catterpillarOptions, id: hash(catterpillarOptions)})
+
+  Matter.Composite.add(mjs.world, [
+    newUser.catterpillar.composite
+  ])
+}
+

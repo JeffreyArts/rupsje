@@ -10,6 +10,7 @@ body {
   // display: flex;
   // height: 100%;
   &.__isMain {
+    .user-input-message,
     .user-control-button {
       display: none;
     }

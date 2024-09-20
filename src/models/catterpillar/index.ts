@@ -4,6 +4,7 @@ import gsap from "gsap"
 import Eye from "./eye"
 import Mouth from "./mouth"
 import BodyPart from "./bodypart"
+import Speech from "./speech"
 
 import { BodyPartOptions } from "./bodypart"
 
@@ -58,6 +59,7 @@ export type CatterpillarOptions = {
 
 interface Catterpillar {
     world: Matter.World
+    speech: Speech,
     eye: {
         left: Eye,
         right: Eye,
@@ -506,6 +508,7 @@ class Catterpillar  {
 
     constructor (
         world: Matter.World,
+        parentElement: HTMLElement,
         options = {
             x: 0,
             y: 0,
@@ -588,7 +591,9 @@ class Catterpillar  {
         }
 
         this.mouth = new Mouth({size: this.bodyPart.size * 1.25})
-        
+
+        this.speech = new Speech(this,parentElement,world)
+
         this.#draw.bind(this)
         this.#draw()
 
@@ -634,6 +639,10 @@ class Catterpillar  {
 
     moveRight() {
         return this.move("right")
+    }
+
+    speak(text: string) {
+        this.speech.speak(text)
     }
 
 }
