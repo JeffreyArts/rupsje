@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "deploy": "NODE_ENV=staging bash deploy.sh",
     "build": "tsc && vite build",
     "preview": "vite preview"
   },

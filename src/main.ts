@@ -59,7 +59,7 @@ const fixUser = (catterpillar: Catterpillar) => {
 
 
 
-const socket = io("http://localhost:3000");
+const socket = io(import.meta.env.VITE_SOCKET_IO);
 
 if (mainScreen) {
   socket.on("addNewUser", data => {
@@ -102,6 +102,10 @@ if (mainScreen) {
     }
 
     if (data.type == "move") {
+      if (user.catterpillar.isMoving) {
+        return
+      }
+      
       if (data.value.toLowerCase() == "left") {
         user.catterpillar.moveLeft()
       } else {
