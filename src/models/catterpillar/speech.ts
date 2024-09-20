@@ -57,7 +57,7 @@ class Speech {
             this.speechBubble.y = this.catterPillar.head.position.y - 24
             setTimeout(() => {
                 this.#updateSpeechBubble()
-            }, 200)
+            }, 333)
         }
     }
 
