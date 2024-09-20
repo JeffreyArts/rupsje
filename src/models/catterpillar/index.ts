@@ -627,6 +627,7 @@ class Catterpillar  {
         this.eye.left.remove()
         this.eye.right.remove()
         this.mouth.remove()
+        this.speech.remove()
         _.each(this.bodyParts, bodyPart => {
             bodyPart.remove()
         })
@@ -643,10 +644,9 @@ class Catterpillar  {
         return this.move("right")
     }
 
-    speak(text: string) {
-        this.speech.speak(text)
+    speak(text: string, activeDuration: number) {
+        this.speech.speak(text, activeDuration)
     }
-
 }
 
 export default Catterpillar

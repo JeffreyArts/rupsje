@@ -42,46 +42,13 @@ const createGround = (targetEl:HTMLElement, mjs) => {
     Matter.Composite.add(mjs.world, [ground])
 }
 
-const renderLoop = (mjs) => {
-    // Exit renderLoop when component has been unmounted
-    
-    if (!mjs.world) {
-        return
-    }
-    
-    requestAnimationFrame(() => {renderLoop(mjs)})
-    
-    
-      console.log("A")
-      return
-      if (CatterpillarService.isOutsideCanvas(Catterpillar, targetEl)) {
-  
-        // this.removeCatterpillar()
-        
-        // // Don't create new catterpillar immediately for UX reasons
-        // setTimeout(() => {
-        //   this.generateCatterpillar()
-        // }, 480)
-      // } 
-    }
-  
-    // if (this.mouseDown && this.mouseTarget) {
-    //     Matter.Body.setVelocity( this.mouseTarget, {
-    //         x: this.mousePos.x - this.mouseTarget.position.x,
-    //         y: this.mousePos.y - this.mouseTarget.position.y,
-    //     })
-    // }
-    
-    // requestAnimationFrame(renderLoop)
-  }
-
 const initializeCanvas = (targetEl: HTMLElement) => {
 
     const MatterJS = initMatterJS(targetEl)
     initPaperJS(targetEl)
     createGround(targetEl, MatterJS)
     // console.log(targetEl)
-    renderLoop(MatterJS)
+    // renderLoop(MatterJS)
     
     return MatterJS
 }

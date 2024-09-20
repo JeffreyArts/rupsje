@@ -85,7 +85,7 @@ class UserControls {
         }
         const inputEl = formEl.querySelector("input[type=text]") as HTMLInputElement
         
-        this.catterPillar.speak(inputEl.value)
+        this.catterPillar.speak(inputEl.value, 24)
 
         this.socket.emit("speak", {
             userId: this.id,

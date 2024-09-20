@@ -35,7 +35,29 @@ const catterpillarOptions = {
       restitution: .5 + Math.random() * .6 - .3,
   },
 }
-// users.push()
+const fixUser = (catterpillar: Catterpillar) => {
+  const centerPoint = Matter.Bodies.circle(targetEl.clientWidth/2,targetEl.clientHeight/3, 5, {
+      label: "centerPoint",
+      isStatic: true
+  })
+
+  const constraintA = Matter.Constraint.create({
+      bodyA: centerPoint,
+      bodyB: catterpillar.head,
+      stiffness: 0.02,
+      damping: 0.02,
+      length:1,
+      render: {
+          strokeStyle: "#9f0",
+          type: "line"
+      }
+  })
+
+  Matter.Composite.add(mjs.world,[centerPoint, constraintA])
+}
+
+
+
 const socket = io("http://localhost:3000");
 
 if (mainScreen) {
@@ -60,12 +82,13 @@ if (mainScreen) {
   socket.on("removeUser", (data) => {
     const removedUsers = _.remove(users, {id: data.userId})
     if (removedUsers.length <= 0) {
-      throw new Error(`Can not find user ${data.userId}`)
+      console.warn(`on:removeUser | Can not find user ${data.userId}`)
+      return
     }
     const user = removedUsers[0]
     user.catterpillar.remove()
   })
-
+  
   socket.on("userAction", (data: {
     type: "move" | "text"
     value: string
@@ -73,7 +96,8 @@ if (mainScreen) {
   }) => {
     const user = _.find(users, {id: data.userId})
     if (!user) {
-      throw new Error(`Can not find user ${data.userId}` )
+      console.warn(`on:userAction | Can not find user ${data.userId}`)
+      return
     }
 
     if (data.type == "move") {
@@ -85,7 +109,7 @@ if (mainScreen) {
     }
     
     if (data.type == "text") {
-      user.catterpillar.speak(data.value)
+      user.catterpillar.speak(data.value, 24)
 
     }
   })
@@ -117,6 +141,7 @@ if (mainScreen) {
   )
 
   users.push(newUser)
+  fixUser(newUser.catterpillar)
 
   socket.emit('newUser', {...catterpillarOptions, userId: hash(catterpillarOptions)})
 

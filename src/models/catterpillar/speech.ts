@@ -20,6 +20,7 @@ class Speech {
     private animatedText: string 
     private targetElement: HTMLElement
     private world: Matter.World
+    private autoRemove: NodeJS.Timeout | undefined
     
     
     #updateText(duration = 100, index = 0) {
@@ -73,23 +74,33 @@ class Speech {
     }
 
     remove() {
+        console.log("Remove speech bubble")
         this.speechBubble?.remove()
         this.animatedText = ""
         this.speechBubble = undefined
+        if (this.autoRemove) {
+            clearTimeout(this.autoRemove)
+        }
     }
     
     speak(text: string, autoRemove?:number) {
+        if (this.animatedText) {
+            this.remove()
+        }
+        
         this.speechBubble = new SpeechBubble(this.world, this.targetElement, {x: this.catterPillar.head.position.x + 4, y: this.catterPillar.head.position.y - 24, text: this.animatedText})
         Matter.Composite.add(this.world, [this.speechBubble.composite])
+
+
         this.animatedText = text
         if (!this.animatedText) {
             return
         }
         this.#updateText(50)
-                
+        
         // Remove speechBubble after 20 seconds
         if (autoRemove) {
-            setTimeout(() => {
+            this.autoRemove = setTimeout(() => {
                 this.remove()
             }, autoRemove * 1000 )
         }
