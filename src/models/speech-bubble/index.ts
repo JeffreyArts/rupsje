@@ -204,6 +204,38 @@ class SpeechBubble  {
             Matter.Composite.add(this.composite, rightConstraint)
         }
 
+        if (rightTop && leftTop) {
+            const topConstraint = Matter.Constraint.create({
+                label: "topConstraint",
+                bodyA: rightTop,
+                bodyB: leftTop,
+                // stiffness: .024,
+                stiffness: 1,
+                length: this.domElement.clientWidth,
+                render: {
+                    lineWidth: 4,
+                    strokeStyle: "#f09"
+                }
+            })
+            Matter.Composite.add(this.composite, topConstraint)
+        }
+        if (rightBottom && leftBottom) {
+            const bottomConstraint = Matter.Constraint.create({
+                label: "bottomConstraint",
+                bodyA: rightBottom,
+                bodyB: leftBottom,
+                stiffness: .024,
+                // stiffness: .4,
+                length: this.domElement.clientWidth,
+                render: {
+                    lineWidth: 4,
+                    strokeStyle: "#f09"
+                }
+            })
+            Matter.Composite.add(this.composite, bottomConstraint)
+        }
+        
+
 
         this.domElement.style.left = (this.x + this.anchor.width) + "px"
         this.domElement.style.top = (this.y - this.anchor.height - this.size / 2) + "px"
@@ -257,13 +289,18 @@ class SpeechBubble  {
             this.domElement.style.left = x + "px"
         }
     }
+    
     #updateSize() {
+        const bottomConstraint = _.find(this.composite.constraints, {label: "bottomConstraint"})
         const topConstraint = _.find(this.composite.constraints, {label: "topConstraint"})
         const leftConstraint = _.find(this.composite.constraints, {label: "leftConstraint"})
         const rightConstraint = _.find(this.composite.constraints, {label: "rightConstraint"})
         
         if (topConstraint) {
             topConstraint.length = this.domElement.clientWidth
+        }
+        if (bottomConstraint) {
+            bottomConstraint.length = this.domElement.clientWidth
         }
 
         if (leftConstraint) {

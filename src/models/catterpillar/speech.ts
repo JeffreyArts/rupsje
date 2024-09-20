@@ -74,7 +74,6 @@ class Speech {
     }
 
     remove() {
-        console.log("Remove speech bubble")
         this.speechBubble?.remove()
         this.animatedText = ""
         this.speechBubble = undefined
