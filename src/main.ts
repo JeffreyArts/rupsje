@@ -91,7 +91,7 @@ if (mainScreen) {
   })
   
   socket.on("userAction", (data: {
-    type: "move" | "text"
+    type: "move" | "text" | "emote"
     value: string
     userId: string
   }) => {
@@ -105,16 +105,21 @@ if (mainScreen) {
       if (user.catterpillar.isMoving) {
         return
       }
-      
+
       if (data.value.toLowerCase() == "left") {
         user.catterpillar.moveLeft()
       } else {
         user.catterpillar.moveRight()
       }
     }
+
+    if (data.type == "emote") {
+      const emote = data.value as "😐" | "😚" | "🙂"
+      user.catterpillar.mouth.switchState(emote)
+    }
     
     if (data.type == "text") {
-      user.catterpillar.speak(data.value, 24)
+      user.catterpillar.speak(data.value, 32)
 
     }
   })

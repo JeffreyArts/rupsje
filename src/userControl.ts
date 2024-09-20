@@ -13,29 +13,34 @@ class UserControls {
             id: string
         },
         targetButtons: {
-            left: HTMLElement | null,
-            right: HTMLElement | null,
+            left?: HTMLElement | null,
+            right?: HTMLElement | null,
             message: HTMLElement | null,
+            emojis?: HTMLElement | null
         }
     ) {
         
         this.catterPillar = user.catterpillar
         this.socket = user.socket
         this.id = user.id
-        
+        console.log(targetButtons.emojis)
+        if (targetButtons.emojis) {
+            targetButtons.emojis.addEventListener("click", (e) => this.emote(e))
+        }
         
         if (targetButtons.left) {
-            targetButtons.left.addEventListener("click", () => this.moveLeft())
+            targetButtons.left.addEventListener("click", (e) => this.moveLeft(e))
         }
         if (targetButtons.right) {
-            targetButtons.right.addEventListener("click", () => this.moveRight())
+            targetButtons.right.addEventListener("click", (e) => this.moveRight(e))
         }
         if (targetButtons.message) {
             targetButtons.message.addEventListener("submit", (e) => this.submitMessage(e))
         }
     }
     
-    moveLeft() {
+    moveLeft(e:Event) {
+        e.preventDefault()
         if (this.catterPillar.isMoving) {
             return
         }
@@ -48,7 +53,22 @@ class UserControls {
         this.catterPillar.move("left")
     }
     
-    moveRight() {
+    emote(e:Event) {
+        e.preventDefault()
+        const target = e.target as HTMLElement
+
+        if (target) {
+            const emote = target.innerText.trim() as "😐" | "🙂" | "😚"
+            this.socket.emit("emote", {
+                userId: this.id,
+                value: emote
+            })
+            this.catterPillar.mouth.switchState(emote)
+        }
+    }
+
+    moveRight(e: Event) {
+        e.preventDefault()
         if (this.catterPillar.isMoving) {
             return
         }

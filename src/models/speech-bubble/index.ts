@@ -312,11 +312,11 @@ class SpeechBubble  {
         }
 
         _.each(this.bubble.left.constraints, constraint => {
-            constraint.length = this.size/2
+            constraint.length = this.size /2
         })
-
+        
         _.each(this.bubble.right.constraints, constraint => {
-            constraint.length = this.size/2
+            constraint.length = this.size /2
         })
     }
 

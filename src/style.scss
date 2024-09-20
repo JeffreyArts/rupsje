@@ -55,7 +55,7 @@ body {
 
 .user-input-message {
   position: absolute;
-  bottom: 24px;
+  bottom: 84px;
   left: 50%;
   translate: -50% 0
 }
@@ -74,4 +74,17 @@ body {
   right: 0;
   top: 0;
   width: 16vw;
+}
+
+#emojis {
+  position: absolute;
+  right: 8px;
+  font-size: 32px;
+  display: flex;
+  flex-flow: column;
+  bottom: 128px;
+
+  span {
+    padding: 8px;
+  }
 }
