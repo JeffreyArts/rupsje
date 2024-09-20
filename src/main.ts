@@ -8,7 +8,6 @@ import _ from "lodash"
 
 type User = {
   catterpillar: Catterpillar
-  active: boolean
   id: string
 }
 
@@ -41,7 +40,7 @@ const socket = io("http://localhost:3000");
 
 if (mainScreen) {
   socket.on("addNewUser", data => {
-    console.log(targetEl.clientWidth )
+    
     const newUser = {
         catterpillar: new Catterpillar(mjs.world, targetEl, {
           x: targetEl.clientWidth / 2,
@@ -49,14 +48,22 @@ if (mainScreen) {
           autoBlink: true,
           ...data
         }),
-        active: true,
-        id: data.id
+        id: data.userId
     }
     users.push(newUser)
 
     Matter.Composite.add(mjs.world, [
       newUser.catterpillar.composite
     ])
+  })
+
+  socket.on("removeUser", (data) => {
+    const removedUsers = _.remove(users, {id: data.userId})
+    if (removedUsers.length <= 0) {
+      throw new Error(`Can not find user ${data.userId}`)
+    }
+    const user = removedUsers[0]
+    user.catterpillar.remove()
   })
 
   socket.on("userAction", (data: {
@@ -68,7 +75,7 @@ if (mainScreen) {
     if (!user) {
       throw new Error(`Can not find user ${data.userId}` )
     }
-    console.log(data)
+
     if (data.type == "move") {
       if (data.value.toLowerCase() == "left") {
         user.catterpillar.moveLeft()
@@ -109,8 +116,9 @@ if (mainScreen) {
     targetEl
   )
 
-  
-  socket.emit('newUser', {...catterpillarOptions, id: hash(catterpillarOptions)})
+  users.push(newUser)
+
+  socket.emit('newUser', {...catterpillarOptions, userId: hash(catterpillarOptions)})
 
   Matter.Composite.add(mjs.world, [
     newUser.catterpillar.composite

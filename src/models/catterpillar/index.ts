@@ -630,6 +630,8 @@ class Catterpillar  {
         _.each(this.bodyParts, bodyPart => {
             bodyPart.remove()
         })
+        Matter.World.remove(this.world,this.body)
+        Matter.World.remove(this.world,this.composite)
         this.isMoving = false
     }
     
